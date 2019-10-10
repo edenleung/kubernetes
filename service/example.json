@@ -10,7 +10,7 @@
   "spec": {
     "ports": [
       {
-        "name": "app-name",
+        "name": "service-tcp-name",
         "protocol": "TCP",
         "port": 80,
         "targetPort": 80
