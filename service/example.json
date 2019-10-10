@@ -8,6 +8,9 @@
     }
   },
   "spec": {
+    "selector": {
+      "k8s-app": "app-name"
+    },
     "ports": [
       {
         "name": "service-tcp-name",
@@ -16,8 +19,6 @@
         "targetPort": 80
       }
     ],
-    "type": "LoadBalancer",
-    "sessionAffinity": "None",
-    "externalTrafficPolicy": "Cluster"
+    "type": "LoadBalancer"
   }
 }
