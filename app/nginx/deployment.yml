@@ -1,0 +1,21 @@
+apiVersion: apps/v1beta1
+
+kind: Deployment
+
+metadata:
+  name: dev-web
+  labels:
+    dev: web
+
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        dev: web
+    spec:
+      containers:
+        - name: web
+          image: nginx
+          ports:
+          - containerPort: 80
