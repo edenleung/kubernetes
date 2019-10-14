@@ -19,3 +19,26 @@ spec:
           image: nginx
           ports:
           - containerPort: 80
+          volumeMounts:
+          - name: source-dir
+            mountPath: /usr/share/nginx/html
+          - name: nginx-config
+            mountPath: /etc/nginx/nginx.conf
+          - name: nginx-vhost-config
+            mountPath: /etc/nginx/conf.d
+          - name: nginx-log
+            mountPath: /var/log/nginx
+      volumes:
+      - name: source-dir
+        hostPath:
+          path: /path/workspace
+      - name: nginx-config
+        hostPath:
+          path: /path/conf/nginx.conf
+      - name: nginx-vhost-config
+        hostPath:
+          path: /path/conf/conf.d
+      - name: nginx-log
+        hostPath:
+          path: /path/log
+         
