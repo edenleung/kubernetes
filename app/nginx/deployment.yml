@@ -3,19 +3,19 @@ apiVersion: apps/v1beta1
 kind: Deployment
 
 metadata:
-  name: dev-web
+  name: Project
   labels:
-    dev: web
+    app: project
 
 spec:
-  replicas: 5
+  replicas: 1
   template:
     metadata:
       labels:
-        dev: web
+        project: nginx
     spec:
       containers:
-        - name: web
+        - name: nginx
           image: nginx
           ports:
           - containerPort: 80
