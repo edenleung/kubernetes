@@ -40,6 +40,15 @@ spec:
               value: "1234"
           ports:
             - containerPort: 3306
+        - name: php
+          image: php:7.1-fpm-alpine
+          volumeMounts:
+            - name: php-ini
+              mountPath: /usr/local/etc/php/php.ini
+            - name: php-fpm
+              mountPath: /usr/local/etc/php-fpm.d/www.conf
+            - name: source-dir
+              mountPath: /usr/share/nginx/html
       volumes:
       - name: source-dir
         hostPath:
