@@ -30,18 +30,21 @@ spec:
             mountPath: /var/log/nginx
         - name: mysql
           image: mysql:5.6
+          # 挂载配置文件、mysql二进制文件 *
           volumeMounts:
             - name: mysql-config
               mountPath: /etc/mysql/my.cnf
             - name: mysql-data
               mountPath: /var/lib/mysql
           env:
+            # 数据库密码 *
             - name: MYSQL_ROOT_PASSWORD
               value: "1234"
           ports:
             - containerPort: 3306
         - name: php
           image: php:7.1-fpm-alpine
+          # 挂载配置文件、项目源码目录到POD *
           volumeMounts:
             - name: php-ini
               mountPath: /usr/local/etc/php/php.ini
@@ -49,6 +52,7 @@ spec:
               mountPath: /usr/local/etc/php-fpm.d/www.conf
             - name: source-dir
               mountPath: /usr/share/nginx/html
+      # 挂载配置（宿主机 理解为本地） *
       volumes:
       - name: source-dir
         hostPath:
@@ -101,7 +105,7 @@ spec:
       protocol: TCP
   type: LoadBalancer
 ---
-# PHPMYADMIN
+# 部署 PHPMYADMIN
 apiVersion: v1
 kind: Pod
 metadata:
@@ -114,6 +118,7 @@ spec:
     image: phpmyadmin/phpmyadmin
     env:
       - name: PMA_HOST
+        # 连接 MYSQL 服务
         value: mysql-svc
 ---     
 # 映射本地端口到phpmyadmin端口
