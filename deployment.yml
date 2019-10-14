@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dcnmp
+  labels:
+    app: dcnmp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dcnmp
+  template:
+    metadata:
+      labels:
+        app: dcnmp
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - name: source-dir
+            mountPath: /usr/share/nginx/html
+          - name: nginx-config
+            mountPath: /etc/nginx/nginx.conf
+          - name: nginx-vhost-config
+            mountPath: /etc/nginx/conf.d
+          - name: nginx-log
+            mountPath: /var/log/nginx
+        - name: mysql
+          image: mysql:5.6
+          volumeMounts:
+            - name: mysql-config
+              mountPath: /etc/mysql/my.cnf
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "1234"
+      volumes:
+      - name: source-dir
+        hostPath:
+          path: /path/workspace
+      - name: nginx-config
+        hostPath:
+          path: /path/conf/nginx.conf
+      - name: nginx-vhost-config
+        hostPath:
+          path: /path/conf/conf.d
+      - name: nginx-log
+        hostPath:
+          path: /path/log
+      - name: mysql-config
+        hostPath:
+          path: /path/conf/my.cnf
+      - name: mysql-data
+        hostPath:
+          path: /path/data/mysql
+---
+# 映射本地端口到NGINX端口
+apiVersion: v1
+kind: Service
+metadata:
+  name: dnmp-svc
+  labels:
+    svc: nginx
+spec:
+  selector:
+    app: dcnmp
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: LoadBalancer
+  
